@@ -1,0 +1,58 @@
+@startuml
+
+class Bank {
+    - name: String
+    - branches: List<Branch>
+    + createAccount(customer: Customer, type: String): Account
+    + processTransaction(transaction: Transaction)
+}
+
+class Branch {
+    - branchID: String
+    - location: String
+    - accounts: List<Account>
+    + addAccount(account: Account)
+}
+
+class Customer {
+    - customerID: String
+    - name: String
+    - address: String
+    - accounts: List<Account>
+    + openAccount(bank: Bank, type: String): Account
+}
+
+class Account {
+    - accountNumber: String
+    - balance: Double
+    + deposit(amount: Double)
+    + withdraw(amount: Double)
+    + getBalance(): Double
+}
+
+class Transaction {
+    - transactionID: String
+    - amount: Double
+    - date: Date
+    - type: String
+    + execute()
+}
+
+class DepositTransaction {
+    - depositMethod: String
+    + execute()
+}
+
+class WithdrawalTransaction {
+    - withdrawalMethod: String
+    + execute()
+}
+
+Bank "1" -- "*" Branch
+Branch "1" -- "*" Account
+Customer "1" -- "*" Account
+Account "1" -- "*" Transaction
+Transaction <|-- DepositTransaction
+Transaction <|-- WithdrawalTransaction
+
+@enduml
